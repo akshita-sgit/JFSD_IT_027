@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alliance Weather Finder</title>
+    <!-- Add Bootstrap CDN for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-pzjw8f+ua7Kw1TIq0oR9z5Xa5SC0szIm6LwZo5r5TwrzjtAJSr5ZGGptZjfN0X29" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #6a376e;
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #6f288b;
+            margin-bottom: 30px;
+        }
+        .weather-container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-group input {
+            font-size: 16px;
+        }
+        button {
+            background-color: #6b00b3;
+            color: white;
+        }
+        button:hover {
+            background-color: #8e1de2;
+        }
+        .weather-info p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .weather-info span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Alliance Weather Finder</h1>
+        <div class="weather-container">
+            <form onsubmit="getweather(event)">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="city" placeholder="Enter city" id="cityInput">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Search</button>
+            </form>
+            <div class="weather-info mt-4">
+                <p id="city"></p>
+                <p>Temperature: <span id="temp"></span></p>
+                <p>Min Temp: <span id="tmin"></span></p>
+                <p>Max Temp: <span id="tmax"></span></p>
+                <p>Humidity: <span id="humidity"></span></p>
+                <p>Wind Speed: <span id="speed"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zyItlhZ/M2xX5Y6Xk33Q5S39fV5d8CpzJGb7f7D8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0oR9z5Xa5SC0szIm6LwZo5r5TwrzjtAJSr5ZGGptZjfN0X29" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0oR9z5Xa5SC0szIm6LwZo5r5TwrzjtAJSr5ZGGptZjfN0X29" crossorigin="anonymous"></script>
+
+    <script>
+        const api = {
+            base: "https://api.openweathermap.org/data/2.5/weather?q=",
+            key: "8010ac3ee90996dae79355507fea2b2f"
+        };
+
+        // 🌦 getweather function: Fetches weather data for the entered city
+        function getweather(event) {
+            event.preventDefault();
+            const cityname = document.getElementById('cityInput').value;
+            fetch(${api.base}${cityname}&appid=${api.key}&units=metric)
+                .then(response => response.json())
+                .then(data => showweather(data))
+                .catch(err => alert('⚡ City not found or an error occurred'));
+        }
+
+        // 🌤 showweather function: Displays the weather information for the city
+        function showweather(data) {
+            document.getElementById('city').textContent = ${data.name}, ${data.sys.country};
+            document.getElementById('temp').textContent = ${data.main.temp} °C;
+            document.getElementById('tmin').textContent = ${data.main.temp_min} °C;
+            document.getElementById('tmax').textContent = ${data.main.temp_max} °C;
+            document.getElementById('humidity').textContent = ${data.main.humidity} %;
+            document.getElementById('speed').textContent = ${data.wind.speed} m/s;
+        }
+    </script>
+</body>
+</html>
